@@ -13,11 +13,7 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <SelectList
-        setSelected={(val) => setSelected(val)}
-        data={data}
-        save="value"
-      />
+      <Text>Home</Text>
       <StatusBar style="auto" />
     </View>
   );

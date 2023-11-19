@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -7,13 +7,45 @@ import HomeScreen from "./screens/home";
 import MapScreen from "./screens/map";
 import ExpenseScreen from "./screens/expense";
 import React, { useState } from "react";
-
-const Tab = createBottomTabNavigator();
+import TripModal from "./tripModal";
+import { SelectList } from "react-native-dropdown-select-list";
 
 export default function App() {
+  const [tripModalVisible, setTripModalVisible] = useState(false);
+  const Tab = createBottomTabNavigator();
+
+  const [selected, setSelected] = useState("");
+
+  const data = [
+    { key: "1", value: "SE Asia" },
+    { key: "2", value: "Europe" },
+  ];
+
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={{
+          headerLeft: () => (
+            <SelectList
+              setSelected={(val) => setSelected(val)}
+              data={data}
+              save="value"
+            />
+          ),
+          headerRight: () => (
+            <TouchableOpacity style={styles.button}>
+              <MaterialIcons name="add" color="#000" size={40} />
+            </TouchableOpacity>
+          ),
+          headerRightContainerStyle: {
+            marginRight: 20,
+          },
+          headerLeftContainerStyle: {
+            marginLeft: 20,
+          },
+          headerTitle: "",
+        }}
+      >
         <Tab.Screen
           name="Itinerary"
           component={HomeScreen}
@@ -45,3 +77,22 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fbcbc9",
+  },
+  button: {
+    width: 45,
+    height: 45,
+    backgroundColor: "#fff",
+    borderColor: "#000",
+    borderWidth: 1,
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
